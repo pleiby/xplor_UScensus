@@ -1,0 +1,107 @@
+---
+title: "Experiment with Tidy Census"
+author: "Paul Leiby"
+date: "4/15/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(tidycensus)
+```
+
+## tidycrensus Basic Usage
+
+https://walker-data.com/tidycensus/articles/basic-usage.html
+
+To get started working with tidycensus, users should load the package along with the tidyverse package, and set their Census API key. A key can be obtained from http://api.census.gov/data/key_signup.html.
+
+
+```{r cars}
+censusAPIkey = "edee52ebaa9aaf412f083705a8ab289ef50db97d"
+census_api_key(censusAPIkey)
+
+```
+
+## `get_decennial`
+
+There are two major functions implemented in tidycensus: get_decennial(), which grants access to the 2000, 2010, and 2020 decennial US Census APIs, and get_acs(), which grants access to the 1-year and 5-year American Community Survey APIs.
+
+In this basic example, let’s look at median age by state in 2010:
+
+```{r}
+age10 <- get_decennial(geography = "state", 
+                       variables = "P013001", 
+                       year = 2010)
+
+head(age10)
+```
+
+
+```{r}
+
+#vRacial composition of the population of the District of Columbia 1800-2010
+Year 	  total 	 white 	 black 	 free 	slave 	other_nonWB 	AI_E_A 	A_PI 	Asian 	NH_OPI 	Two_or_more
+1800 	  14093 	 10066 	  4027 	  783 	3,244 	  	 
+1810 	  24023 	 16079 	  7914 	 2549 	5,395 	  	 
+1820 	  33039 	 23164 	 10425 	 4048 	6,377 	  	 
+1830 	  39834 	 27563 	 12271 	 6152 	6,119 	  	 
+1840 	  43711 	 30657 	 13054 	 8360 	4,694 	  	 
+1850 	  51687 	 37941 	 13746 	10059 	3,687 	  	 
+1860 	  75080 	 60763 	 14316 	11131 	3,185 	1 	  	 
+1870 	 131700 	 88278 	 43404 	  	            18 	  	 
+1880 	 177624 	118006 	 59596 	  	            22 	  	 
+1890 	 230392 	154695 	 75572 	  	            125 	  	 
+1900 	 278718 	191532 	 86702 	  	            484 	  	 
+1910 	 331069 	236128 	 94446 	  	            495 	  	 
+1920 	 437571 	326860 	109996 	  	            745 	  	 
+1930 	 486869 	353981 	132068 	  	            820 	  	 
+1940 	 663091 	474326 	187266 	  	            1499 	  	 
+1950 	 802178 	517865 	280803 	  	            3510 	  	 
+1960 	 763956 	345263 	411737 	  	            6956 	  	 
+1970 	 756510 	209272 	537712 	  	            9526 	  	 
+1980 	 638333 	171796 	448229 	  	            18308     1031 	6,636 	  	 
+1990 	 606900 	179667 	399604 	  	            27629     1559 	11,233 	  	 
+2000 	 572059 	176101 	343312 	  	            52646 	  1713 	  	    15,189 	348 	13.446
+2010   601723 	231471 	305125 	  	            65127 	  2079 	  	    21,056 	302 	17,316
+        
+```
+
+[District of Columbia Population History](https://matthewbgilmore.wordpress.com/district-of-columbia-population-history/) Matthew B. Gilmore, 
+
+Key:
+
+AI/E/A = American Indian/Eskimo/Aleut
+
+A/PI = Asian/Pacific Islander
+
+NH&OPI = Native Hawaiian and Other Pacific Islander
+
+Notes/Sources:
+Dodd, Donald B. [comp.] Historical statistics of the United States: Two centuries of the census.
+1993
+d DeBow, J.D.B Statistical view of the United States…. 1854
+*Green, Constance. Washington.
+**1960 census
+***corrected addition by M B Gilmore
+
+
+[How the region’s racial and ethnic demographics have changed since 1970](https://www.dcpolicycenter.org/publications/regional-demographic-shifts/)
+January 13, 2020, D.W. Rowlands, DC Policy Center
+
+[Morning newsletter: D.C. struggles to retain millennials | Axios DC](https://www.dcpolicycenter.org/publications/20220328-axiosdc/)
+March 28, 2022, D.C. Policy Center
+
+> On March 28, 2022, the D.C. Policy Center’s article, Demographic shifts in the District of Columbia following the COVID-19 pandemic, was cited by Axios DC:
+
+> The District is no longer attracting as many of the young and well-educated adults who have fueled its recent population growth, census data shows.
+Why it matters: The migration of young people over the past two decades led to an increase in public school enrollment, new development, and more tax revenue for the District.
+But the number of people aged 25 to 34 moving into the city has slowed in the past four years, further declining during the pandemic, local think tank D.C. Policy Center found.
+In 2020, 54% of the residents who moved out of the city were aged 25 to 34. There was a net loss of nearly 16,100 residents in that age group.
+
+[How the Icon of Black Political Power Ended Up With the Most Displacement in the U.S. - Gentrification in DC](https://www.politico.com/news/magazine/2022/04/15/washington-dc-gentrification-black-political-power-00024515) By Steven Overly, Delece Smith-Barrow, Katy O'Donnell and Ming Li, 04/15/2022, Politico
+Can a new coalition of Black and white residents save the ‘Chocolate City’?
